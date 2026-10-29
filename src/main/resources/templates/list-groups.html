@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Учебные группы</title>
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container py-4">
+    <nav class="mb-4">
+        <a th:href="@{/list}" class="btn btn-outline-primary">
+            Студенты
+        </a>
+        <a th:href="@{/groups}" class="btn btn-primary">
+            Учебные группы
+        </a>
+    </nav>
+
+    <h1 class="mb-4">Список учебных групп</h1>
+
+    <a th:href="@{/groups/new}" class="btn btn-success mb-3">
+        Добавить группу
+    </a>
+
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped align-middle">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Название группы</th>
+                <th>Факультет</th>
+                <th>Курс</th>
+                <th>Действия</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:if="${#lists.isEmpty(groups)}">
+                <td colspan="5" class="text-center">
+                    Учебных групп пока нет
+                </td>
+            </tr>
+
+            <tr th:each="group : ${groups}">
+                <td th:text="${group.id}"></td>
+                <td th:text="${group.name}"></td>
+                <td th:text="${group.faculty}"></td>
+                <td th:text="${group.course}"></td>
+                <td>
+                    <a th:href="@{/groups/edit(groupId=${group.id})}"
+                       class="btn btn-warning btn-sm">
+                        Изменить
+                    </a>
+
+                    <form th:action="@{/groups/delete}" method="post"
+                          class="d-inline"
+                          onsubmit="return confirm('Удалить учебную группу?');">
+                        <input type="hidden" name="groupId"
+                               th:value="${group.id}">
+                        <button type="submit" class="btn btn-danger btn-sm">
+                            Удалить
+                        </button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>
